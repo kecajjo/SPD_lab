@@ -1,3 +1,3 @@
-Jacek Multan 248964
-Mariusz Sokołowski
+Jacek Multan 248964\
+Mariusz Sokołowski\
 Dominik Ćwikowski
