@@ -1,0 +1,3 @@
+Przykładem procesu technologicznego opisanego za pomocą problemu przepływowego jest wytwarzanie detali na maszynach CNC.
+W kontekście tego procesu maszynami są tokarka, frezarka, człowiek.
+Zadaniem jest wytworzenie części, a operacjami są toczenie, frezowanie, gratowanie.
