@@ -1,19 +1,8 @@
-f = open("dane.txt", "r")
+import read
+import johnson_alg as alg
 
-lineFromFile = f.readline()
-
-listFromFile = lineFromFile.split(" ")
-numberOfTask = int(listFromFile[0])
-numberOfMachine = int(listFromFile[1])
-
-
-matrix = []
-
-for i in range(numberOfTask):
-    row = []
-    lineFromFile = f.readline()
-    listFromFile = lineFromFile.split(" ")
-    for j in range(numberOfMachine):
-        row.append(int(listFromFile[j]))
-    matrix.append(row)
-print(matrix)
+x,y,z = read.read_from_file("dane.txt")
+print(x)
+print(y)
+print(z)
+alg.johnson_alg(x,y,z)
