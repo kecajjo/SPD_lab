@@ -17,3 +17,4 @@ for i in range(numberOfTask):
         row.append(int(listFromFile[j]))
     matrix.append(row)
 print(matrix)
+
