@@ -1,19 +1,24 @@
-f = open("dane.txt", "r")
+import read
+import johnson_alg as alg
 
-lineFromFile = f.readline()
+x,y,z = read.read_from_file("dane.txt")
+print(x)
+print(y)
+alg.johnson_alg(x,y,z)
 
-listFromFile = lineFromFile.split(" ")
-numberOfTask = int(listFromFile[0])
-numberOfMachine = int(listFromFile[1])
+
+def calculate_cmax(permutation, number_of_machines, table):
+    m = [0] * len(permutation)
+    for i in permutation:
+        for j in range(0, number_of_machines):
+            if j == 0:
+                m[j] += table[i-1][j] #i-1 bo w wektorze permutacji mamy liczby od 1 i bysmy wyleciali poza tablice
+            else:
+                m[j] = max(m[j], m[j-1]) + table[i-1][j]
+    return max(m)
 
 
-matrix = []
 
-for i in range(numberOfTask):
-    row = []
-    lineFromFile = f.readline()
-    listFromFile = lineFromFile.split(" ")
-    for j in range(numberOfMachine):
-        row.append(int(listFromFile[j]))
-    matrix.append(row)
-print(matrix)
+perm = [3, 17, 9, 8, 15, 14, 11, 16, 13, 19, 6, 4, 5, 18, 1, 2, 10, 7, 20, 12]
+result = calculate_cmax(perm,y, z)
+print(result)
