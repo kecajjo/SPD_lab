@@ -1,61 +1,61 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-fig, ax = plt.subplots()
-
 ##############################################
-# TasksPos[][x] zawiera zadania po kolei
-# TasksPOs[][][0 lub 1] na pozycji 0 jest
+# WszystkieZadania[][x] zawiera zadania po kolei
+# WszystkieZadania[][][0 lub 1] na pozycji 0 jest
 # czas startu, na pozycji 1 jest czas trwania
-##############################################
-TasksPos = [
-    [[0.5, 1], [2, 1], [4, 6]],
-    [[0, 1], [1, 0.5], [4, 2]]
-]
+
+# Przykład
+# WszystkieZadania = [
+#    [[0.5, 1], [2, 1], [4, 6]],
+#    [[0, 1], [1, 0.5], [4, 2]]
+# ]
 #############################################
 
-iterator = 0  # Iterator pomocniczy
-NumOfTasks = len(TasksPos)  # Liczba zadan
-NumOfOperations = len(TasksPos[0])  # Liczba operacji #Czas ciaglego wykonywania dla jednej maszyny
 
-# Obliczanie maksymalnego czsu wykonywania sie na maszynie
-Cmax = 0
-for operacje in range(NumOfOperations):
-    Cmax += TasksPos[0][operacje][1]
+def plot_gannt(task_list_3d, cmax):
 
-# Generowanie listy z nazwami dla szerokosci Y
-TasksWidth = [[0.0]*NumOfTasks for _ in range(2)]
+    fig, ax = plt.subplots()
 
-for i in range(NumOfTasks):
-    TasksWidth[i][0] = (i + 1) - 0.5 / 2
-    TasksWidth[i][1] = 0.5
+    iterator = 0  # Iterator pomocniczy
+    num_of_tasks = len(task_list_3d)  # Liczba zadan
+    num_of_operations = len(task_list_3d[0])  # Liczba operacji
 
-# Generowanie listy z nazwami dla wartosci Y
-ListaZadan = []
-for task in range(NumOfTasks + 1):
-    ListaZadan.append("Zadanie " + str(task))
+    # Generowanie listy z współrzędnymi Y dla każdego zadania
+    task_y_position = [[0.0]*num_of_tasks for _ in range(2)]
 
-# Szerokosc i zakres X
-xpos = np.arange(Cmax * NumOfTasks)
-plt.xticks(xpos)
+    for i in range(num_of_tasks):
+        task_y_position[i][0] = (i + 1) - 0.5 / 2
+        task_y_position[i][1] = 0.5
 
-# Szerokosc i zakres Y
-ypos = np.arange(NumOfTasks + 1)
-plt.yticks(ypos, ListaZadan[0:NumOfTasks + 1])
+    # Generowanie listy z nazwami dla zadań
+    task_name = []
+    for task in range(num_of_tasks + 1):
+        task_name.append("Zadanie " + str(task))
 
-# Ustawienie siatki
-plt.grid(axis="x", alpha=0.5)
+    # Zakres X
+    xpos = np.arange(cmax * num_of_tasks)
+    plt.xticks(xpos)
 
-# Generowanie blokow
-for szerokosc in TasksWidth:
-    ax.broken_barh(TasksPos[iterator], szerokosc, facecolor="blue", edgecolor="0")
-    iterator += 1
+    # Zakres Y
+    ypos = np.arange(num_of_tasks + 1)
+    plt.yticks(ypos, task_name[0:num_of_tasks + 1])
 
-# Generowanie podpisow
-for task in range(NumOfTasks):
-    for operacja in range(NumOfOperations):
-        label = "O" + str(operacja + 1)
-        ax.text(TasksPos[task][operacja][0] + 0.1, task + 1, label)
+    # Ustawienie siatki
+    plt.grid(axis="x", alpha=0.5)
 
-plt.title("Diagram Gannta", fontsize=16)
-fig.show()
+    # Generowanie operacji
+    for y_value in task_y_position:
+        ax.broken_barh(task_list_3d[iterator], y_value, facecolor="lime", edgecolor="0")
+        iterator += 1
+
+    # Generowanie podpisow operacji
+    for task in range(num_of_tasks):
+        for operacja in range(num_of_operations):
+            label = "O" + str(operacja + 1)
+            ax.text(task_list_3d[task][operacja][0] + 0.1, task + 1, label)
+
+    # Wyswietlenie diagramu :)
+    plt.title("Diagram Gannta", fontsize=16)
+    plt.show()
