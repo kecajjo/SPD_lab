@@ -13,7 +13,9 @@ def brute_force(table):
         current_value = 0
         for perm in permutations:
             current_value = cmax.calculate(perm, table)
-            if i == 0: smallest_present_value = current_value #pierwsza iteracja
+            if i == 0:
+                smallest_present_value = current_value #pierwsza iteracja
+                best_current_perm = perm
             i += 1
             if current_value < smallest_present_value:       #jesli nowa jest mniejsza od tej najmniejszej dotychczas
                 smallest_present_value = current_value
