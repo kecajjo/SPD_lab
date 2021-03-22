@@ -59,3 +59,5 @@ def plot_gannt(task_list_3d, cmax):
     # Wyswietlenie diagramu :)
     plt.title("Diagram Gannta", fontsize=16)
     plt.show()
+
+
