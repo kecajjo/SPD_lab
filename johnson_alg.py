@@ -1,3 +1,6 @@
+import time
+import cmax
+
 def multiMachToTwoMach(numberOfTask, numberOfMachine, matrix):    
     #changing multi machine problem into 2 machine problem
     tasks = []
@@ -23,6 +26,8 @@ def multiMachToTwoMach(numberOfTask, numberOfMachine, matrix):
     return tasks
 
 def johnson_alg(numberOfTask, numberOfMachine, matrix):
+    start = time.process_time()
+
     tasks = multiMachToTwoMach(numberOfTask,numberOfMachine,matrix)
     print("\n\n\n")
     print(tasks)
@@ -66,6 +71,10 @@ def johnson_alg(numberOfTask, numberOfMachine, matrix):
             del tasks[taskNum]
         else:
             print("Error in func: johnson_alg")
-    print("\n")
-    print(tasksOrder)
+    duration = time.process_time() - start
+    cMax = cmax.calculate(tasksOrder, matrix)
+    
+    return tasksOrder, tasksSheduled, duration, cMax
+    #print("\n")
+    #print(tasksOrder)
 

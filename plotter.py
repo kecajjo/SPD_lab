@@ -3,7 +3,7 @@ import numpy as np
 
 ##############################################
 # WszystkieZadania[x] zawiera zadania po kolei
-# WszystkieZadania[][x] zawiera operacje po kolei
+# WszystkieZadania[][x] zawiera operacje(maszyny) po kolei
 # WszystkieZadania[][][0 lub 1] na pozycji 0 jest
 # czas startu, na pozycji 1 jest czas trwania
 # Przykład

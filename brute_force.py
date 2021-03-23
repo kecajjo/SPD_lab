@@ -20,5 +20,5 @@ def brute_force(table):
             if current_value < smallest_present_value:       #jesli nowa jest mniejsza od tej najmniejszej dotychczas
                 smallest_present_value = current_value
                 best_current_perm = perm
-            duration = time.process_time() - start
+        duration = time.process_time() - start
         return best_current_perm, smallest_present_value, duration
