@@ -23,7 +23,7 @@ def plot_gannt(task_list_3d, cmax):
     num_of_operations = len(task_list_3d[0])  # Liczba operacji
 
     # Generowanie listy z współrzędnymi Y dla każdego zadania
-    task_y_position = [[0.0]*num_of_tasks for _ in range(2)]
+    task_y_position = [[0.0]*2 for _ in range(num_of_tasks)]
 
     for i in range(num_of_tasks):
         task_y_position[i][0] = (i + 1) - 0.5 / 2
@@ -59,5 +59,6 @@ def plot_gannt(task_list_3d, cmax):
     # Wyswietlenie diagramu :)
     plt.title("Diagram Gannta", fontsize=16)
     plt.show()
+
 
 

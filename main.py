@@ -16,21 +16,17 @@ cos, wazne, coscos, coscoscos = alg.johnson_alg(x,y,z)
 #print(time)
 #perm = [3, 17, 9, 8, 15, 14, 11, 16, 13, 19, 6, 4, 5, 18, 1, 2, 10, 7, 20, 12]
 
-
-plotter.plot_gannt([
-    [[0, 4], [4, 4], [8, 10], [18, 6], [24, 2]],
-    [[4, 5], [9, 1], [18, 4], [24, 10], [34, 3]]
- ], 47)
-
+#plotter.plot_gannt([
+ #   [[0, 4], [4, 4], [8, 10], [18, 6], [24, 2]],
+  #  [[4, 5], [9, 1], [18, 4], [24, 10], [34, 3]]
+ #], 47)
 #result = cmax.calculate(perm, z)
 #print(result)
 
 
-# w johnsonie trzeba dodac liczenie czasu
 # w plotterze, trzeba podawać permutacje w argumentach,
 # i to jakoś wykorzystać bo w tej chwili zawsze zadania są numerowane od 1
 # w brute force mialem problem ze jesli macierz  ilosc zadan jest mniejsza od ilosci maszyn to wywala blad
-#tu jest funkcja ktora przygotowuje dane, ale nie dokońca działa
 
 #########################################
 # wyj[][][0,1] 0 is start time 1 is end time
@@ -40,10 +36,7 @@ plotter.plot_gannt([
 # table[k][] k is task number
 ############################################
 def prepare_data_to_plot(table):
-    #wyj = [[0,0]] * len(permutation)
     wyj = []
-    #print(wyj)
-    #print(permutation)
     for currMachine in range(len(table[0])):
         taskOfMachine = [[0,0]] * len(table)
         for currTask in range(len(table)):
@@ -68,10 +61,24 @@ perm, cmax,time  = brute.brute_force(z)
 print(wazne)
 print("\n\n\n\n")
 cos=prepare_data_to_plot(wazne)
-plotter.plot_gannt(cos,50)
-print("\n\n\n\n")
 print(cos)
+#[[[0, 4], [4, 4], [8, 10], [18, 6], [24, 2]], [[4, 5], [9, 1], [18, 4], [24, 10], [34, 3]]]
+#[[[0, 1], [1, 5], [5, 12], [12, 21]], [[1, 4], [5, 13], [13, 21], [21, 24]], [[4, 12], [13, 20], [21, 27], [27, 32]]]
+
+#plotter.plot_gannt([[[0, 1], [1, 5], [5, 12], [12, 21]], [[1, 4], [5, 13], [13, 21], [21, 24]], [[4, 12], [13, 20], [21, 27], [27, 32]]],32)
+#plotter.plot_gannt(os,32)
+print("\n\n\n\n")
 
 
+def convert_data(tableToChange, matrix):
+    tableFromFunction = tableToChange
+    for currMachine in range(len(tableFromFunction)):
+        for currTask in range(len(tableFromFunction[currMachine])):
+            tableFromFunction[currMachine][currTask][1]=matrix[currTask][currMachine]
+    return tableFromFunction
+
+
+cos1 = convert_data(cos,wazne)
+plotter.plot_gannt(cos1,32)
 
 
