@@ -61,12 +61,12 @@ def plot_gannt(task_list_3d, cmax):
     plt.show()
 
 
-def convert_time_of_end_to_duration(tableToChangeEndTimeToDuration, sortedTableWithTasksAndMachines):
-    tableFromFunction = tableToChangeEndTimeToDuration
-    for currMachine in range(len(tableFromFunction)):
-        for currTask in range(len(tableFromFunction[currMachine])):
-            tableFromFunction[currMachine][currTask][1]=sortedTableWithTasksAndMachines[currTask][currMachine]
-    return tableFromFunction
+def convert_time_of_end_to_duration(table_to_change_end_time_to_duration, sorted_table_with_tasks_and_machines):
+    table_from_function = table_to_change_end_time_to_duration
+    for currMachine in range(len(table_from_function)):
+        for currTask in range(len(table_from_function[currMachine])):
+            table_from_function[currMachine][currTask][1]=sorted_table_with_tasks_and_machines[currTask][currMachine]
+    return table_from_function
 
 
 

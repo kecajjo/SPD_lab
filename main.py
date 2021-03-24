@@ -8,11 +8,11 @@ import plotter
 
 numberOfTask, numberOfMachine, matrix = read.read_from_file("dane.txt")
 
-#tasksOrderBrute, tasksScheduledBrute, cMaxBrute, durationBrute = brute.execute_brute_force(matrix)
+tasksOrderBrute, tasksScheduledBrute, cMaxBrute, durationBrute = brute.execute_brute_force(matrix)
 tasksOrderJohn, tasksScheduledJohn, cMaxJohn, durationJohn = alg.johnson_alg(numberOfTask, numberOfMachine, matrix)
-#print("Tasks order from brute force: {:}\nTasks order for Johnson algorithm: {:}" .format(tasksOrderBrute, tasksOrderJohn))
-#print("Cmax brute force: {:}\nCmax for Johnson algorithm: {:}".format(cMaxBrute,cMaxJohn))
-#print("Time to find solution for brute force: {:}\nTime to find solution for Johnson algorithm: {:}".format(durationBrute,durationJohn))
+print("Tasks order from brute force: {:}\nTasks order for Johnson algorithm: {:}" .format(tasksOrderBrute, tasksOrderJohn))
+print("Cmax brute force: {:}\nCmax for Johnson algorithm: {:}".format(cMaxBrute,cMaxJohn))
+print("Time to find solution for brute force: {:}\nTime to find solution for Johnson algorithm: {:}".format(durationBrute,durationJohn))
 
 plotter.makePlot(tasksScheduledJohn,cMaxJohn)
 
