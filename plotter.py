@@ -14,7 +14,7 @@ import numpy as np
 #############################################
 
 
-def plot_gannt(task_list_3d, cmax):
+def plot_gannt(task_list_3d, cmax, permutation):
 
     fig, ax = plt.subplots()
 
@@ -52,9 +52,11 @@ def plot_gannt(task_list_3d, cmax):
 
     # Generowanie podpisow operacji
     for task in range(num_of_tasks):
-        for operacja in range(num_of_operations):
-            label = "O" + str(operacja + 1)
-            ax.text(task_list_3d[task][operacja][0] + 0.1, task + 1, label)
+        iterator = 0
+        for operacja in permutation:
+            label = "O" + str(operacja)
+            ax.text(task_list_3d[task][iterator][0] + 0.1, task + 1, label)
+            iterator += 1
 
     # Wyswietlenie diagramu :)
     plt.title("Diagram Gannta", fontsize=16)
@@ -67,9 +69,6 @@ def convert_time_of_end_to_duration(table_to_change_end_time_to_duration, sorted
         for currTask in range(len(table_from_function[currMachine])):
             table_from_function[currMachine][currTask][1]=sorted_table_with_tasks_and_machines[currTask][currMachine]
     return table_from_function
-
-
-
 
 # w plotterze, trzeba podawać permutacje w argumentach,
 # i to jakoś wykorzystać bo w tej chwili zawsze zadania są numerowane od 1
@@ -105,8 +104,8 @@ def prepare_data_to_plot(table):
     return wyj
 
 
-def makePlot(tasksScheduled,cMax):
+def makePlot(tasksScheduled,cMax, permutation):
     table = prepare_data_to_plot(tasksScheduled)
     toShow = convert_time_of_end_to_duration(table, tasksScheduled)
 
-    plot_gannt(toShow, cMax)
+    plot_gannt(toShow, cMax, permutation)
