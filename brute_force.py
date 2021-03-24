@@ -21,4 +21,4 @@ def brute_force(table):
                 smallest_present_value = current_value
                 best_current_perm = perm
         duration = time.process_time() - start
-        return best_current_perm, smallest_present_value, duration
+        return best_current_perm, best_current_perm, smallest_present_value, duration

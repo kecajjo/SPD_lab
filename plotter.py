@@ -105,8 +105,8 @@ def prepare_data_to_plot(table):
     return wyj
 
 
-def makePlot(tasksSheduled,cMax):
-    table = prepare_data_to_plot(tasksSheduled)
-    toShow = convert_time_of_end_to_duration(table, tasksSheduled)
+def makePlot(tasksScheduled,cMax):
+    table = prepare_data_to_plot(tasksScheduled)
+    toShow = convert_time_of_end_to_duration(table, tasksScheduled)
 
     plot_gannt(toShow, cMax)

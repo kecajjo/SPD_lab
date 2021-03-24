@@ -29,10 +29,10 @@ def johnson_alg(numberOfTask, numberOfMachine, matrix):
     start = time.process_time()
 
     tasks = multiMachToTwoMach(numberOfTask,numberOfMachine,matrix)
-    print("\n\n\n")
-    print(tasks)
+    #print("\n\n\n")
+    #print(tasks)
 
-    tasksSheduled = []
+    tasksScheduled = []
     tasksOrder = []
     fromBeg = 0
     fromEnd = 0
@@ -60,12 +60,12 @@ def johnson_alg(numberOfTask, numberOfMachine, matrix):
 
         #adding shortest task to sheduled list
         if(machineNum == 0):
-            tasksSheduled.insert(fromBeg, matrix[tasks[taskNum][2]])
+            tasksScheduled.insert(fromBeg, matrix[tasks[taskNum][2]])
             tasksOrder.insert(fromBeg, tasks[taskNum][2]+1)
             fromBeg +=1
             del tasks[taskNum]
         elif(machineNum == 1):
-            tasksSheduled.insert(len(tasksSheduled)-fromEnd, matrix[tasks[taskNum][2]])
+            tasksScheduled.insert(len(tasksScheduled)-fromEnd, matrix[tasks[taskNum][2]])
             tasksOrder.insert(len(tasksOrder)-fromEnd, tasks[taskNum][2]+1)
             fromEnd +=1
             del tasks[taskNum]
@@ -74,7 +74,7 @@ def johnson_alg(numberOfTask, numberOfMachine, matrix):
     duration = time.process_time() - start
     cMax = cmax.calculate(tasksOrder, matrix)
     
-    return tasksOrder, tasksSheduled, duration, cMax
+    return tasksOrder, tasksScheduled, cMax, duration
     #print("\n")
     #print(tasksOrder)
 
