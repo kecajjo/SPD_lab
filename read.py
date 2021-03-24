@@ -17,5 +17,4 @@ def read_from_file(file_name):
         for j in range(numberOfMachine):
             row.append(int(listFromFile[j]))
         matrix.append(row)
-    print(matrix)
     return numberOfTask, numberOfMachine, matrix

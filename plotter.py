@@ -61,4 +61,52 @@ def plot_gannt(task_list_3d, cmax):
     plt.show()
 
 
+def convert_time_of_end_to_duration(tableToChangeEndTimeToDuration, sortedTableWithTasksAndMachines):
+    tableFromFunction = tableToChangeEndTimeToDuration
+    for currMachine in range(len(tableFromFunction)):
+        for currTask in range(len(tableFromFunction[currMachine])):
+            tableFromFunction[currMachine][currTask][1]=sortedTableWithTasksAndMachines[currTask][currMachine]
+    return tableFromFunction
 
+
+
+
+# w plotterze, trzeba podawać permutacje w argumentach,
+# i to jakoś wykorzystać bo w tej chwili zawsze zadania są numerowane od 1
+# w brute force mialem problem ze jesli macierz  ilosc zadan jest mniejsza od ilosci maszyn to wywala blad
+
+#########################################
+# wyj[][][0,1] 0 is start time 1 is end time
+# wyj[][x][] x is task number
+# wyj[y][][] y is machine number
+# table[][z] z is machine number
+# table[k][] k is task number
+############################################
+def prepare_data_to_plot(table):
+    wyj = []
+    for currMachine in range(len(table[0])):
+        taskOfMachine = [[0,0]] * len(table)
+        for currTask in range(len(table)):
+            if currTask == 0:
+                if currMachine == 0:
+                    taskOfMachine[currTask] = [0, table[currTask][currMachine]]
+                else:
+                    #table[][] is duration, wyj[][][] is end time of task on previous machine
+                    taskOfMachine[currTask] = [wyj[currMachine-1][currTask][1], wyj[currMachine-1][currTask][1]+table[currTask][currMachine]]
+            else:
+                if currMachine == 0:
+                    #we take previous task's end time, #table[][] is duration of current task so after adding it gives us end time of current task
+                    taskOfMachine[currTask] = [taskOfMachine[currTask-1][1], taskOfMachine[currTask-1][1]+table[currTask][currMachine]]
+                else:
+                    #max of {[previous machine, current task, end time], [current machine, previous task end time]} and is our starting point
+                    startTimeOfTask = max(wyj[currMachine-1][currTask][1], taskOfMachine[currTask-1][1])
+                    taskOfMachine[currTask] = [startTimeOfTask, startTimeOfTask+table[currTask][currMachine]]
+        wyj.append(taskOfMachine)
+    return wyj
+
+
+def makePlot(tasksSheduled,cMax):
+    table = prepare_data_to_plot(tasksSheduled)
+    toShow = convert_time_of_end_to_duration(table, tasksSheduled)
+
+    plot_gannt(toShow, cMax)

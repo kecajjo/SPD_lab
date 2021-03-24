@@ -4,7 +4,7 @@
 
 #permutation - konkretna kolejnosc zadan do realizacji,
 def calculate(permutation, table):
-    m = [0] * len(permutation)  #robienie miejsca listę
+    m = [0] * len(table[0])  #robienie miejsca listę
     for i in permutation:
         for j in range(0, len(table[0])): #inaczej ilosc maszyn
             if j == 0:
