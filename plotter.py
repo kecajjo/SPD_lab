@@ -109,3 +109,12 @@ def makePlot(tasksScheduled,cMax, permutation):
     toShow = convert_time_of_end_to_duration(table, tasksScheduled)
 
     plot_gannt(toShow, cMax, permutation)
+
+#This function sort our table by order from perm
+#this feature allow us to easier plotting
+#function return sorted_table depends on perm
+def sort_table_by_perm(tableToSort, perm):
+    sorted_table = []
+    for task in perm:
+        sorted_table.append(tableToSort[task-1])
+    return sorted_table
