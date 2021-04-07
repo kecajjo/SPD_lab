@@ -20,3 +20,20 @@ def read_from_file(file_name):
             row.append(int(list_from_file[j]))
         loaded_table_from_file.append(row)
     return number_of_task, number_of_machine, loaded_table_from_file
+
+def create_csv_file(name_of_file):
+    f = open(name_of_file,"x")
+    f.write("Size of instance;Algorithm;Cmax;Executing time\n")
+    f.close()
+
+
+def append_to_file(name_of_file,row):
+    f = open(name_of_file,"a")
+    f.write(row)
+    f.write("\n")
+
+def format_data_to_string(number_of_tasks, number_of_machines,algorithm_type_in_string,tasks_order,cmax,duration):
+    return_string1 = "{}".format(number_of_tasks) + "x{}".format(number_of_machines) +"  ;   "+algorithm_type_in_string + "  ;   "
+    return_string2 = "{}".format(tasks_order) + "   ;   {}".format(cmax) + "  ;   {}".format(duration)
+
+    return  return_string1+return_string2

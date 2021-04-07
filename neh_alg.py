@@ -35,8 +35,19 @@ def neh(sorted_dict,table):
                 min_cmax = current_cmax
             #print(current_cmax)
         perm.insert(index_of_min, key_list[index])
-    print("Permutacja od NEHa: {}".format(perm))
-    print("CMAX od NEHa: {}".format(min_cmax))
+
+    return perm, min_cmax
+    #print("Permutacja od NEHa: {}".format(perm))
+    #print("CMAX od NEHa: {}".format(min_cmax))
+
+def execute_neh(table_from_file):
+    sorted_dict = calculate_priority_from_table(table_from_file)
+    start = time.process_time()
+    tasks_order, cmax = neh(sorted_dict, table_from_file)
+    duration = time.process_time() - start
+
+    return  tasks_order,cmax,duration
+
 
 
 
