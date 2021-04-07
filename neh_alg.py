@@ -12,21 +12,31 @@ def calculate_priority_from_table(table_from_file):
             summary[index_of_task] += table_from_file[index_of_task][index_of_machine]
         dict_of_priority.update({index_of_task+1:summary[index_of_task]})
 
-    return dict(sorted(dict_of_priority.items(),key= lambda item: item[1]))
-
+    print( dict(sorted(dict_of_priority.items(),key= lambda item: item[1], reverse=True)))
+    return dict(sorted(dict_of_priority.items(),key= lambda item: item[1], reverse=True))
 
 def neh(sorted_dict,table):
     #list_of =  [0] * len(sorted_dict)
     list_of=[]
-    list_of.append(sorted_dict)
-    keys = sorted_dict.keys
-    perm = [1]
+    key_list = list(sorted_dict.keys())
+    #print(key_list)
+    list_of.append(key_list[0])
+    perm = []    
+    perm.append(key_list[0])
     for index in range(1 , len(sorted_dict)):
+        min_cmax = 1000000000#very big number
+        index_of_min = 1000000#not existing index
         for index_of_perm in range(index+1):
-            current_perm = perm
-            current_perm.insert(index_of_perm,index)
+            current_perm = perm.copy()
+            current_perm.insert(index_of_perm, key_list[index])
             current_cmax = cmax.calculate(current_perm, table)
-            print(current_cmax)
+            if current_cmax < min_cmax:
+                index_of_min = index_of_perm
+                min_cmax = current_cmax
+            #print(current_cmax)
+        perm.insert(index_of_min, key_list[index])
+    print("Permutacja od NEHa: {}".format(perm))
+    print("CMAX od NEHa: {}".format(min_cmax))
 
 
 

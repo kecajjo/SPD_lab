@@ -7,8 +7,8 @@ import neh_alg
 
 
 numberOfTask, numberOfMachine, matrix = read.read_from_file("dane.txt")
-perm = [1,3]
-print(cmax.calculate(perm,matrix))
+#perm = [1,3]
+#print(cmax.calculate(perm,matrix))
 x = neh_alg.calculate_priority_from_table(matrix)
 neh_alg.neh(x,matrix)
 #neh_alg.calculate_priority_from_table(matrix)
