@@ -17,3 +17,4 @@ def calculate(permutation, table):
             else:
                 m[j] = max(m[j], m[j-1]) + table[i-1][j]
     return max(m)
+

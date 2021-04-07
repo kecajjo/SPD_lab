@@ -3,13 +3,19 @@ import johnson_alg as alg
 import cmax as cmax
 import time
 import plotter
+import neh_alg
 
 
 numberOfTask, numberOfMachine, matrix = read.read_from_file("dane.txt")
+perm = [1,3]
+print(cmax.calculate(perm,matrix))
+x = neh_alg.calculate_priority_from_table(matrix)
+neh_alg.neh(x,matrix)
+#neh_alg.calculate_priority_from_table(matrix)
 
 #tasksOrderBrute, tasksScheduledBrute, cMaxBrute, durationBrute = brute.execute_brute_force(matrix)
 tasksOrderJohn, tasksScheduledJohn, cMaxJohn, durationJohn = alg.johnson_alg(numberOfTask, numberOfMachine, matrix)
-print(cMaxJohn)
+#print(cMaxJohn)
 
 
 
