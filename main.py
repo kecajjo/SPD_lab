@@ -11,6 +11,7 @@ tasksOrderJohn, tasksScheduledJohn, cMaxJohn, durationJohn = alg.johnson_alg(num
 tasks_order,cmax_neh,duration_neh = neh_alg.execute_neh(matrix)
 x = read.format_data_to_string(numberOfTask,numberOfMachine,cMaxJohn,durationJohn,cmax_neh,duration_neh)
 read.append_to_file("log.csv",x)
+neh_alg.find_crit_path(matrix)
 
 #perm = [1,3]
 #print(cmax.calculate(perm,matrix))
