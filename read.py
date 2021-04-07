@@ -1,4 +1,4 @@
-
+from os.path import exists #to check if file exists
 
 def read_from_file(file_name):
     f = open(file_name, "r")
@@ -23,17 +23,20 @@ def read_from_file(file_name):
 
 def create_csv_file(name_of_file):
     f = open(name_of_file,"x")
-    f.write("Size of instance;Algorithm;Cmax;Executing time\n")
+    f.write("Size of instance   ,   CmaxJohnoson   ,TimeJohnson     ,   CmaxNeh     ,       TimeNeh\n")
     f.close()
 
 
 def append_to_file(name_of_file,row):
-    f = open(name_of_file,"a")
+    if not exists(name_of_file):
+        create_csv_file(name_of_file)
+    f = open(name_of_file, "a")
     f.write(row)
     f.write("\n")
+    f.close()
 
-def format_data_to_string(number_of_tasks, number_of_machines,algorithm_type_in_string,tasks_order,cmax,duration):
-    return_string1 = "{}".format(number_of_tasks) + "x{}".format(number_of_machines) +"  ;   "+algorithm_type_in_string + "  ;   "
-    return_string2 = "{}".format(tasks_order) + "   ;   {}".format(cmax) + "  ;   {}".format(duration)
+def format_data_to_string(number_of_tasks, number_of_machines,cmax_johnson,duration_johnson,cmax_neh,duration_neh):
+    return_string1 = "{}".format(number_of_tasks) + "x{}".format(number_of_machines) +"  ,   {}     ".format(cmax_johnson)+"  ,   {:8.6f}    ".format(duration_johnson)
+    return_string2 = "   ,   {}".format(cmax_neh) + "  ,   {:8.6f}".format(duration_neh)
 
     return  return_string1+return_string2

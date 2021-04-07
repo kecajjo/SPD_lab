@@ -8,9 +8,9 @@ import neh_alg
 #read.create_csv_file("log.csv")
 numberOfTask, numberOfMachine, matrix = read.read_from_file("dane.txt")
 tasksOrderJohn, tasksScheduledJohn, cMaxJohn, durationJohn = alg.johnson_alg(numberOfTask, numberOfMachine, matrix)
-x = read.format_data_to_string(numberOfTask,numberOfMachine,"Johnson",tasksOrderJohn,cMaxJohn,durationJohn)
+tasks_order,cmax_neh,duration_neh = neh_alg.execute_neh(matrix)
+x = read.format_data_to_string(numberOfTask,numberOfMachine,cMaxJohn,durationJohn,cmax_neh,duration_neh)
 read.append_to_file("log.csv",x)
-print(x)
 
 #perm = [1,3]
 #print(cmax.calculate(perm,matrix))
