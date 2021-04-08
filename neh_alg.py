@@ -41,7 +41,7 @@ def execute_neh(table_from_file):
     sorted_dict = calculate_priority_from_table(table_from_file)
     start = time.process_time()
     #odpalamy modyfikacje
-    tasks_order, cmax = neh_mod1(sorted_dict, table_from_file)
+    tasks_order, cmax = neh_mod2(sorted_dict, table_from_file)
     duration = time.process_time() - start
 
     return  tasks_order,cmax,duration
@@ -87,7 +87,122 @@ def neh_mod1(sorted_dict,table):
 
 
     print(perm)
-    return perm, min_cmax    
+    return perm, min_cmax
+
+
+def neh_mod3(sorted_dict,table):
+    key_list = list(sorted_dict.keys())
+    perm = []
+    perm.append(key_list[0])
+    for index in range(1 , len(sorted_dict)):
+        min_cmax = 1000000000#very big number
+        index_of_min = 1000000#not existing index
+        for index_of_perm in range(index+1):
+            current_perm = perm.copy()
+            current_perm.insert(index_of_perm, key_list[index])
+            current_cmax = cmax.calculate(current_perm, table)
+            if current_cmax < min_cmax:
+                index_of_min = index_of_perm
+                min_cmax = current_cmax
+            #print(current_cmax)
+        perm.insert(index_of_min, key_list[index])
+        #sorting table for find_crit_path function
+        sorted_table = sort_table_by_perm(table, perm)
+        #print(sorted_table)
+        crit_path = find_crit_path(sorted_table)
+
+        most_machines_task = 0
+        perm_index_to_be_removed = 100000000#non existing index
+        current_task = 0
+        previous_task = -1
+        counter_of_task = 0
+        max_counter = 0
+        for index_in_crit_path in range(len(crit_path)):
+            current_task = crit_path[index_in_crit_path][0]
+            if(current_task == previous_task):
+                counter_of_task += 1
+            else:
+                counter_of_task = 1
+            if(max_counter < counter_of_task):
+                max_counter = counter_of_task
+                perm_index_to_be_removed = crit_path[index_in_crit_path][0]
+            previous_task = current_task
+            #if(crit_path[index_in_crit_path][2] > longest_operation):
+             #   longest_operation = crit_path[index_in_crit_path][2]
+              #  perm_index_to_be_removed = crit_path[index_in_crit_path][0]
+        task_num = perm.pop(perm_index_to_be_removed)
+        min_cmax = 1000000000#very big number
+        index_of_min = 1000000#not existing index
+        for index_of_perm in range(index+1):
+            current_perm = perm.copy()
+            current_perm.insert(index_of_perm, task_num)
+            current_cmax = cmax.calculate(current_perm, table)
+            if current_cmax < min_cmax:
+                index_of_min = index_of_perm
+                min_cmax = current_cmax
+            #print(current_cmax)
+        perm.insert(index_of_min, task_num)
+
+
+    print(perm)
+    return perm, min_cmax
+
+def neh_mod2(sorted_dict,table):
+    key_list = list(sorted_dict.keys())
+    perm = []
+    perm.append(key_list[0])
+    for index in range(1 , len(sorted_dict)):
+        min_cmax = 1000000000#very big number
+        index_of_min = 1000000#not existing index
+        for index_of_perm in range(index+1):
+            current_perm = perm.copy()
+            current_perm.insert(index_of_perm, key_list[index])
+            current_cmax = cmax.calculate(current_perm, table)
+            if current_cmax < min_cmax:
+                index_of_min = index_of_perm
+                min_cmax = current_cmax
+            #print(current_cmax)
+        perm.insert(index_of_min, key_list[index])
+        #sorting table for find_crit_path function
+        sorted_table = sort_table_by_perm(table, perm)
+        #print(sorted_table)
+        crit_path = find_crit_path(sorted_table)
+
+        most_machines_task = 0
+        perm_index_to_be_removed = 100000000#non existing index
+        current_task = 0
+        previous_task = -1
+        time_of_task = 0
+        max_time = 0
+        for index_in_crit_path in range(len(crit_path)):
+            current_task = crit_path[index_in_crit_path][0]
+            if(current_task == previous_task):
+                time_of_task += crit_path[index_in_crit_path][2]
+            else:
+                time_of_task = crit_path[index_in_crit_path][2]
+            if(max_time < time_of_task):
+                max_time = time_of_task
+                perm_index_to_be_removed = crit_path[index_in_crit_path][0]
+            previous_task = current_task
+            #if(crit_path[index_in_crit_path][2] > longest_operation):
+             #   longest_operation = crit_path[index_in_crit_path][2]
+              #  perm_index_to_be_removed = crit_path[index_in_crit_path][0]
+        task_num = perm.pop(perm_index_to_be_removed)
+        min_cmax = 1000000000#very big number
+        index_of_min = 1000000#not existing index
+        for index_of_perm in range(index+1):
+            current_perm = perm.copy()
+            current_perm.insert(index_of_perm, task_num)
+            current_cmax = cmax.calculate(current_perm, table)
+            if current_cmax < min_cmax:
+                index_of_min = index_of_perm
+                min_cmax = current_cmax
+            #print(current_cmax)
+        perm.insert(index_of_min, task_num)
+
+
+    print(perm)
+    return perm, min_cmax
 ###############################
 # needs sorted table
 # crit_path_reversed[nb_of_task, nb_of_mach, operation_time]
