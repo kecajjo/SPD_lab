@@ -40,7 +40,8 @@ def neh(sorted_dict,table):
 def execute_neh(table_from_file):
     sorted_dict = calculate_priority_from_table(table_from_file)
     start = time.process_time()
-    tasks_order, cmax = neh(sorted_dict, table_from_file)
+    #odpalamy modyfikacje
+    tasks_order, cmax = neh_mod1(sorted_dict, table_from_file)
     duration = time.process_time() - start
 
     return  tasks_order,cmax,duration
@@ -64,32 +65,28 @@ def neh_mod1(sorted_dict,table):
         #sorting table for find_crit_path function
         sorted_table = sort_table_by_perm(table, perm)
         #print(sorted_table)
-        crit_path = sorted_table
+        crit_path = find_crit_path(sorted_table)
         longest_operation = 0
         perm_index_to_be_removed = 100000000#non existing index
         for index_in_crit_path in range(len(crit_path)):
             if(crit_path[index_in_crit_path][2] > longest_operation):
                 longest_operation = crit_path[index_in_crit_path][2]
-                perm_index_to_be_removed = index_in_crit_path
+                perm_index_to_be_removed = crit_path[index_in_crit_path][0]
         task_num = perm.pop(perm_index_to_be_removed)
-        #TODO wstawic task_num na kazde mozliwe miejsce
-        # zostawic tam gdzie bedzie najmniejszy cmax
-        # cieszyc sie ze wreszcie fajrant
         min_cmax = 1000000000#very big number
         index_of_min = 1000000#not existing index
         for index_of_perm in range(index+1):
             current_perm = perm.copy()
-            current_perm.insert(index_of_perm, key_list[task_num])
+            current_perm.insert(index_of_perm, task_num)
             current_cmax = cmax.calculate(current_perm, table)
             if current_cmax < min_cmax:
                 index_of_min = index_of_perm
                 min_cmax = current_cmax
             #print(current_cmax)
-        perm.insert(index_of_min, key_list[task_num])
-        #TODO sprawdzic czy ostatnie 25linijek dziala i ma sens
+        perm.insert(index_of_min, task_num)
 
 
-
+    print(perm)
     return perm, min_cmax    
 ###############################
 # needs sorted table
@@ -124,8 +121,8 @@ def find_crit_path(table):
     #print("")
     #print(crit_path)
     return crit_path
-####################################
-#TODO
+###################################juz zrobione#
+#
 # aktualnie dostajemy sciezke krytyczna z posortowanej tablicy, wiec zeby odzyskac
 # numer taska musimy przeszukac crit_path[x][2], znalezc najwiekszy element i zobaczyc dla jakiego x
 # nastepnie sprawdzic jaki to byl oryginalny indeks, przez liste permutacji [x]
@@ -140,6 +137,7 @@ def sort_table_by_perm(tableToSort, perm):
     for task in perm:
         sorted_table.append(tableToSort[task-1])
     return sorted_table
+
 
 
 

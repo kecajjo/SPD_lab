@@ -13,6 +13,7 @@ x = read.format_data_to_string(numberOfTask,numberOfMachine,cMaxJohn,durationJoh
 read.append_to_file("log.csv",x)
 neh_alg.find_crit_path(matrix)
 
+#neh_alg.neh_mod1()
 #perm = [1,3]
 #print(cmax.calculate(perm,matrix))
 
