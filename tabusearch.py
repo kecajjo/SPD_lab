@@ -2,6 +2,7 @@ import cmax
 import johnson_alg
 import read
 import math
+import time
 
 class tabu_search:
     def __init__(self, task_lst):
@@ -12,29 +13,43 @@ class tabu_search:
         self.best_cmax = math.inf
         self.neighbourhood_best_perm = []
         
-    def execute(self, neighbourhood = "swap", strt_perm = "ascending"):
+    def execute(self, neighbourhood = "swap", strt_perm = "ascending", stop = "iterate",stop_value = 1000, tabu_length = 100):
         self.best_perm = self.starting_perm(strt_type=strt_perm)
         self.neighbourhood_best_perm = self.best_perm
-        self.best_cmax = cmax.calculate(self.perm, self.matrix)
+        self.best_cmax = cmax.calculate(self.neighbourhood_best_perm, self.matrix)
         neighbourhood_cmax = self.best_cmax
 
         do_loop = True
-        # if stop=="time":
-        #   stop_param = time.now()
-        # elif stop == "iterate":
-        #   stop_param = 0
+
+        if stop == "time":
+            stop_param = time.process_time()
+        elif stop == "iterate":
+            stop_param = 0
+        else:
+            print("ERROR: execute option not known")
         while do_loop:
             neighbourhood_cmax = math.inf
             self.find_neighbourhood(type = neighbourhood)
-            for neigh_num in range(self.neighbourhood_list):
+            for neigh_num in range(len(self.neighbourhood_list)):
                 curr_cmax = cmax.calculate(self.neighbourhood_list[neigh_num], self.matrix)
                 if curr_cmax < neighbourhood_cmax:
-                    curr_cmax = neighbourhood_cmax
+                    neighbourhood_cmax = curr_cmax
                     self.neighbourhood_best_perm = self.neighbourhood_list[neigh_num].copy()
+            if len(self.tabu_list) >= tabu_length:
+                self.tabu_list.pop(0)
             self.tabu_list.append(self.neighbourhood_best_perm)
             if neighbourhood_cmax < self.best_cmax:
                 self.best_cmax = neighbourhood_cmax
                 self.best_perm = self.neighbourhood_best_perm.copy()
+            if stop == "time":
+                if time.process_time() - stop_param > stop_value:
+                    do_loop = False
+            if stop == "iterate":
+                stop_param += 1
+                if stop_param > stop_value:
+                    do_loop = False
+
+
 
 
         
@@ -50,16 +65,25 @@ class tabu_search:
     def find_neigh_swap(self):
         self.neighbourhood_list.clear()
         #basic_perm = self.perm.copy()
-        for i in range(len(self.perm)-1):
-            current_perm = self.perm.copy()
-            current_perm[i], current_perm[i+1] = self.perm[i+1], self.perm[i]
-            self.neighbourhood_list.append(current_perm)
+        for i in range(len(self.neighbourhood_best_perm)-1):
+            current_perm = self.neighbourhood_best_perm.copy()
+            current_perm[i], current_perm[i+1] = self.neighbourhood_best_perm[i+1], self.neighbourhood_best_perm[i]
+            on_tabu_list = False
+            for i in self.tabu_list:
+                if i == current_perm:
+                    on_tabu_list = True
+
+            if on_tabu_list == False:
+                self.neighbourhood_list.append(current_perm)
+
     
     def starting_perm(self, strt_type = "ascending"):
         perm = []
         if strt_type == "ascending":
             for i in range(len(self.matrix)):
                 perm.append(i+1)
+        elif strt_type == "johnson":
+            perm,x,y,z = johnson_alg.johnson_alg(len(matrix),len(matrix[0]),matrix)
         else:
             print("ERROR: starting_perm option not known")
         return perm
@@ -68,3 +92,5 @@ if __name__ == "__main__":
     numberOfTask, numberOfMachine, matrix = read.read_from_file("dane.txt")
     tabu = tabu_search(matrix)
     tabu.find_neighbourhood()
+    tabu.execute(strt_perm="johnson")
+    print(tabu.best_cmax)

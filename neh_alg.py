@@ -62,6 +62,9 @@ def neh_mod1(sorted_dict,table):
                 min_cmax = current_cmax
             #print(current_cmax)
         perm.insert(index_of_min, key_list[index])
+
+
+
         #sorting table for find_crit_path function
         sorted_table = sort_table_by_perm(table, perm)
         #print(sorted_table)
@@ -73,6 +76,9 @@ def neh_mod1(sorted_dict,table):
                 longest_operation = crit_path[index_in_crit_path][2]
                 perm_index_to_be_removed = crit_path[index_in_crit_path][0]
         task_num = perm.pop(perm_index_to_be_removed)
+
+
+
         min_cmax = 1000000000#very big number
         index_of_min = 1000000#not existing index
         for index_of_perm in range(index+1):
