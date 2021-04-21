@@ -18,7 +18,7 @@ class tabu_search:
     #stop - pod jakim wzgledem zatrzymamy funkcje - albo po czasie albo po iteracjach
     #stop_value - warunek stopu, gdy patrzymy na czas, jest to ilosc sekund, jesli patrzymy na iteracje - ilosc iteracji
     #tabu_length - dlugosc listy tabu, ma wplyw na rozwiazanie, im dluzsza tym lepiej
-    def execute(self, neighbourhood = "swap", strt_perm = "ascending", stop = "iterate",stop_value = 1000, tabu_length = 100):
+    def execute(self, neighbourhood = "swap", strt_perm = "ascending", stop = "iterate",stop_value = 100, tabu_length = 100):
         self.best_perm = self.starting_perm(strt_type=strt_perm)
         self.neighbourhood_best_perm = self.best_perm
         self.best_cmax = cmax.calculate(self.neighbourhood_best_perm, self.matrix)
@@ -62,8 +62,8 @@ class tabu_search:
     def find_neighbourhood(self, type="swap"):
         if type == "swap":
             self.find_neigh_swap()
-        #elif:
-            #TODO
+        elif type == "insert":
+            self.find_neigh_insert()
         else:
             print("ERROR: find_neighbourhood option not known")
 
@@ -79,6 +79,18 @@ class tabu_search:
                 if i == current_perm:
                     on_tabu_list = True
 
+            if on_tabu_list == False:
+                self.neighbourhood_list.append(current_perm)
+
+    def find_neigh_insert(self):
+        self.neighbourhood_list.clear()
+        for i in range(len(self.neighbourhood_best_perm)-1):
+            current_perm = self.neighbourhood_best_perm.copy()
+            current_perm.insert(len(current_perm)-1,self.neighbourhood_best_perm[0])
+            on_tabu_list = False
+            for i in self.tabu_list:
+                if i == current_perm:
+                    on_tabu_list = True
             if on_tabu_list == False:
                 self.neighbourhood_list.append(current_perm)
 
