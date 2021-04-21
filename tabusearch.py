@@ -12,7 +12,12 @@ class tabu_search:
         self.neighbourhood_list = []
         self.best_cmax = math.inf
         self.neighbourhood_best_perm = []
-        
+    #funkcja wykonujaca tabusearch wraz z podanymi parametrami
+    #neighbourhood - jaka opcja do szukania sasiedzctwa , swap czy insert
+    #strt_perm - kolejnosc poczatkowa zadan do modyfikacji
+    #stop - pod jakim wzgledem zatrzymamy funkcje - albo po czasie albo po iteracjach
+    #stop_value - warunek stopu, gdy patrzymy na czas, jest to ilosc sekund, jesli patrzymy na iteracje - ilosc iteracji
+    #tabu_length - dlugosc listy tabu, ma wplyw na rozwiazanie, im dluzsza tym lepiej
     def execute(self, neighbourhood = "swap", strt_perm = "ascending", stop = "iterate",stop_value = 1000, tabu_length = 100):
         self.best_perm = self.starting_perm(strt_type=strt_perm)
         self.neighbourhood_best_perm = self.best_perm
@@ -53,7 +58,7 @@ class tabu_search:
 
 
         
-
+    #funkcja szukająca sąsiedztwo, w zależności od parametru type
     def find_neighbourhood(self, type="swap"):
         if type == "swap":
             self.find_neigh_swap()
@@ -62,13 +67,14 @@ class tabu_search:
         else:
             print("ERROR: find_neighbourhood option not known")
 
+    #funkcja szukajaca sasiedzctwa poprzez swap, zamienia dwa sasiednie elementy
     def find_neigh_swap(self):
         self.neighbourhood_list.clear()
         #basic_perm = self.perm.copy()
         for i in range(len(self.neighbourhood_best_perm)-1):
             current_perm = self.neighbourhood_best_perm.copy()
             current_perm[i], current_perm[i+1] = self.neighbourhood_best_perm[i+1], self.neighbourhood_best_perm[i]
-            on_tabu_list = False
+            on_tabu_list = False #zabezpieczenie przed wpisywaniem czegos do tabu list, jesli bylo juz przedtem
             for i in self.tabu_list:
                 if i == current_perm:
                     on_tabu_list = True
@@ -76,7 +82,7 @@ class tabu_search:
             if on_tabu_list == False:
                 self.neighbourhood_list.append(current_perm)
 
-    
+    #funkcja która zwraca permutacje w zależności od parametru, do wyboru, domyslna kolejnosc albo z algorytmu johnsona
     def starting_perm(self, strt_type = "ascending"):
         perm = []
         if strt_type == "ascending":
