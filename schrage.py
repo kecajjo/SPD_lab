@@ -22,6 +22,7 @@ class schrage:
         #current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
         current_time =  min(N_n,key= lambda data:data.prep_time).prep_time
         i = 1
+
         while(len(N_g) != 0 or len(N_n) != 0):
             while(len(N_n) != 0 and min(N_n,key= lambda data:data.prep_time).prep_time <= current_time):
                 #z nastepna linijka cos jest nie tak
