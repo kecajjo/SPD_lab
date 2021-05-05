@@ -2,10 +2,11 @@
 import operator
 
 class data:
-    def __init__(self,prepare, make, delivery):
+    def __init__(self,prepare, make, delivery, task):
         self.prep_time = prepare
         self.make_time = make
         self.deliv_time = delivery
+        self.task_num = task
 
 class schrage:
     def __init__(self):
@@ -17,21 +18,21 @@ class schrage:
 
 
     def schrange_alg(self):
-        N_g = []
-        N_n = self.matrix_tasks.copy()
+        N_g = [] # zbior zadan do uszeregowania
+        N_n = self.matrix_tasks.copy()  #zbior zadan nieuszeregowanych
         #current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
         current_time =  min(N_n,key= lambda data:data.prep_time).prep_time
 
         while(len(N_g) != 0 or len(N_n) != 0):
-            while(len(N_n) != 0 and min(N_n,key= lambda data:data.prep_time).prep_time <= current_time):
+            while(len(N_n) != 0 and min(N_n,key= lambda data:data.prep_time).prep_time <= current_time):#budowanie zbioru zadan gotowych do uszeregowania
                 j = N_n.index(min(N_n, key= lambda data:data.prep_time))
                 N_g.append(N_n.pop(j))
-            if len(N_g) == 0:
+            if len(N_g) == 0: #aktualizacja chwili
                 current_time = min(N_n, key= lambda data:data.prep_time).prep_time
             else:
                 j = N_g.index(max(N_g, key= lambda data:data.deliv_time))
                 tmp = N_g.pop(j)
-                self.part_perm.append(j+1)
+                self.part_perm.append(tmp.task_num)
                 current_time += tmp.make_time
                 self.max_end_time = max(self.max_end_time, current_time + tmp.deliv_time)
 
@@ -89,7 +90,7 @@ class schrage:
             prep_time = int(list_from_file[0])
             make_time = int(list_from_file[1])
             deliv_time = int(list_from_file[2])
-            rpq = data(prep_time,make_time,deliv_time)
+            rpq = data(prep_time,make_time,deliv_time,i+1)
             self.matrix_tasks.append(rpq)
 
 
@@ -103,6 +104,6 @@ if __name__ == "__main__":
     sch = schrage()
     sch.read_from_file("dane.txt")
     #sch.matrix_tasks[0].prep_time
-    x = sch.schrange_alg_interrupt()
-    print(x)
+    x,y = sch.schrange_alg()
+    print(y)
     #print(matrix[2].index(max(matrix,key=operator.itemgetter(2))[2]))
