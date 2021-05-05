@@ -13,7 +13,7 @@ class schrage:
         self.stages_number=3
         self.matrix_tasks=[]
         self.part_perm = []
-        self.max_delivery_time = 0
+        self.max_end_time = 0
 
 
     def schrange_alg(self):
@@ -21,17 +21,27 @@ class schrage:
         N_n = self.matrix_tasks.copy()
         #current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
         current_time =  min(N_n,key= lambda data:data.prep_time).prep_time
-        i = 1
 
         while(len(N_g) != 0 or len(N_n) != 0):
             while(len(N_n) != 0 and min(N_n,key= lambda data:data.prep_time).prep_time <= current_time):
                 #z nastepna linijka cos jest nie tak
-                j = N_n.index(min(N_n))
+                j = N_n.index(min(N_n, key= lambda data:data.prep_time))
                 N_g.append(N_n.pop(j))
             if N_g.len() != 0:
-                current_time = min(N_n)[0]
+                current_time = min(N_n, key= lambda data:data.prep_time)
             else:
-                j = N_g.index(max(N_g)[2])
+                j = N_g.index(max(N_g, key= lambda data:data.deliv_time))
+                tmp = N_g.pop(j)
+                self.part_perm.append(j+1)
+                current_time += tmp.make_time
+                self.max_end_time = max(self.max_end_time, current_time + tmp.deliv_time)
+
+        return self.max_end_time, self.part_perm
+
+                
+
+
+
 
     def read_from_file(self,file_name):
         f = open(file_name, "r")
