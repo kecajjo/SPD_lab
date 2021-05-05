@@ -24,7 +24,6 @@ class schrage:
 
         while(len(N_g) != 0 or len(N_n) != 0):
             while(len(N_n) != 0 and min(N_n,key= lambda data:data.prep_time).prep_time <= current_time):
-                #z nastepna linijka cos jest nie tak
                 j = N_n.index(min(N_n, key= lambda data:data.prep_time))
                 N_g.append(N_n.pop(j))
             if len(N_g) == 0:
@@ -38,27 +37,33 @@ class schrage:
 
         return self.max_end_time, self.part_perm
 
-    def schrange_alg_extended(self):
+    def schrange_alg_interrupt(self):
         N_g = []
         N_n = self.matrix_tasks.copy()
         # current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
         current_time = min(N_n, key=lambda data: data.prep_time).prep_time
-
+        l = N_n[0]
         while (len(N_g) != 0 or len(N_n) != 0):
             while (len(N_n) != 0 and min(N_n, key=lambda data: data.prep_time).prep_time <= current_time):
-                # z nastepna linijka cos jest nie tak
                 j = N_n.index(min(N_n, key=lambda data: data.prep_time))
-                N_g.append(N_n.pop(j))
+                tmp = N_n.pop(j)
+                N_g.append(tmp)
+                if tmp.deliv_time > l.deliv_time:
+                    l.make_time = current_time - tmp.prep_time
+                    current_time = tmp.prep_time
+                    if l.make_time > 0:
+                        N_g.append(l)
             if len(N_g) == 0:
                 current_time = min(N_n, key=lambda data: data.prep_time).prep_time
             else:
                 j = N_g.index(max(N_g, key=lambda data: data.deliv_time))
-                tmp = N_g.pop(j)
-                self.part_perm.append(j + 1)
-                current_time += tmp.make_time
-                self.max_end_time = max(self.max_end_time, current_time + tmp.deliv_time)
+                tmp2 = N_g.pop(j)
+                l = tmp2
+                current_time += tmp2.make_time
 
-        return self.max_end_time, self.part_perm
+                self.max_end_time = max(self.max_end_time, current_time + tmp2.deliv_time)
+
+        return self.max_end_time
 
                 
 
@@ -98,6 +103,6 @@ if __name__ == "__main__":
     sch = schrage()
     sch.read_from_file("dane.txt")
     #sch.matrix_tasks[0].prep_time
-    x,y = sch.schrange_alg()
+    x = sch.schrange_alg_interrupt()
     print(x)
     #print(matrix[2].index(max(matrix,key=operator.itemgetter(2))[2]))
