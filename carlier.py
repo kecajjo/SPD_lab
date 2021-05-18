@@ -6,7 +6,8 @@ best_perm = []
 # U wartosc funkcji celu -  Cmax
 # UB gorne oszacowanie wartosci funkcji celu
 # wartosc funkcji dla najlepszego obecnie rozwiazania
-
+# data005 gorszy cmax
+#data003 lepszy cmax 3643 vs 3665
 class carlier:
     def __init__(self):
         pass
@@ -59,17 +60,17 @@ class carlier:
         UB_cos = UB
         if LB < UB :
             self.execute_carlier(matrix_rpq)
-        matrix_rpq[perm[c]].prep_time = temp
+        matrix_rpq[c].prep_time = temp
 
 
 
         #start_time_c = max(matrix_rpq[perm[c]].prep_time, rK_min + pK_min)
-        temp = matrix_rpq[perm[c]].deliv_time
-        matrix_rpq[perm[c]].deliv_time = max(matrix_rpq[perm[c]].deliv_time, qK_min + pK_min)
+        temp = matrix_rpq[c].deliv_time
+        matrix_rpq[c].deliv_time = max(matrix_rpq[c].deliv_time, qK_min + pK_min)
 
-        pKc_min = pK_min + matrix_rpq[perm[c]].make_time
-        qKc_min = min(qK_min, matrix_rpq[perm[c]].deliv_time)
-        rKc_min = min(rK_min, matrix_rpq[perm[c]].prep_time)
+        pKc_min = pK_min + matrix_rpq[c].make_time
+        qKc_min = min(qK_min, matrix_rpq[c].deliv_time)
+        rKc_min = min(rK_min, matrix_rpq[c].prep_time)
         rpq_c_sum = pKc_min + qKc_min + rKc_min
 
         LB = sch.schrange_alg_interrupt(matrix_rpq)
@@ -78,7 +79,7 @@ class carlier:
 
         if LB < UB:
             self.execute_carlier(matrix_rpq)
-        matrix_rpq[perm[c]].deliv_time = temp
+        matrix_rpq[c].deliv_time = temp
 
 
 
@@ -117,7 +118,7 @@ class carlier:
         b_task = perm.index(b)
 
         for val in range(b_task,a_task-1,-1):
-            if matrix_rpq[perm[val]].deliv_time < matrix_rpq[perm[b]].deliv_time:
+            if matrix_rpq[perm[val]].deliv_time < matrix_rpq[perm[b_task]].deliv_time:
                 index = perm[val]
                 return  index
 
