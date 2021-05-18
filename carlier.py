@@ -43,19 +43,20 @@ class carlier:
         pK_min = pK
         rpq_sum = qK_min + rK_min + pK_min
 
-        temp = matrix_rpq[perm[c]].prep_time
-        matrix_rpq[perm[c]].prep_time = max(matrix_rpq[perm[c]].prep_time,rK_min+pK_min)
+        temp = matrix_rpq[c].prep_time
+        matrix_rpq[c].prep_time = max(matrix_rpq[c].prep_time,rK_min+pK_min)
 
-        pKc_min = pK_min + matrix_rpq[perm[c]].make_time
-        qKc_min = min(qK_min,matrix_rpq[perm[c]].deliv_time)
-        rKc_min = min(rK_min,matrix_rpq[perm[c]].prep_time)
+        pKc_min = pK_min + matrix_rpq[c].make_time
+        qKc_min = min(qK_min,matrix_rpq[c].deliv_time)
+        rKc_min = min(rK_min,matrix_rpq[c].prep_time)
         rpq_c_sum = pKc_min + qKc_min + rKc_min
 
-        LB = sch.schrange_alg_interrupt(matrix_rpq)
+        sch_i = schrage.schrage()
+        LB = sch_i.schrange_alg_interrupt(matrix_rpq)
 
 
         LB = max(rpq_sum,rpq_c_sum,LB )
-        
+        UB_cos = UB
         if LB < UB :
             self.execute_carlier(matrix_rpq)
         matrix_rpq[perm[c]].prep_time = temp
