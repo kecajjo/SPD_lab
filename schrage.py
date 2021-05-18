@@ -39,7 +39,8 @@ class schrage:
 
         return self.max_end_time, self.part_perm
 
-    def schrange_alg_interrupt(self):
+    def schrange_alg_interrupt(self,matrix_rpq):
+        self.matrix_tasks = matrix_rpq
         N_g = []
         N_n = self.matrix_tasks.copy()
         # current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
@@ -68,34 +69,30 @@ class schrage:
         return self.max_end_time
 
 
+def read_from_file(file_name):
+    f = open(file_name, "r")
 
+    line_from_file = f.readline()
 
+    list_from_file = line_from_file.split()
+    number_of_task = int(list_from_file[0])
+    number_of_machine = int(list_from_file[1])
 
+    loaded_table_from_file = []
+    matrix_tasks = []
 
-    def read_from_file(self,file_name):
-        f = open(file_name, "r")
-
+    for i in range(number_of_task):
         line_from_file = f.readline()
-
         list_from_file = line_from_file.split()
-        number_of_task = int(list_from_file[0])
-        number_of_machine = int(list_from_file[1])
 
-        loaded_table_from_file = []
-        matrix_tasks = []
+        prep_time = int(list_from_file[0])
+        make_time = int(list_from_file[1])
+        deliv_time = int(list_from_file[2])
+        rpq = data(prep_time, make_time, deliv_time, i)
 
-        for i in range(number_of_task):
-            line_from_file = f.readline()
-            list_from_file = line_from_file.split()
+        matrix_tasks.append(rpq)
 
-            prep_time = int(list_from_file[0])
-            make_time = int(list_from_file[1])
-            deliv_time = int(list_from_file[2])
-            rpq = data(prep_time,make_time,deliv_time,i)
-
-            matrix_tasks.append(rpq)
-
-        return matrix_tasks
+    return matrix_tasks
 
 
 

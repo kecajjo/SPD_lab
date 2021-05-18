@@ -1,6 +1,6 @@
 import  schrage
 import  math
-U_b = math.inf
+UB = math.inf
 best_perm = []
 # n liczba zadan
 # U wartosc funkcji celu -  Cmax
@@ -9,16 +9,84 @@ best_perm = []
 
 class carlier:
     def __init__(self):
-
+        pass
 
     def execute_carlier(self, matrix_rpq):
-        global U_b  # zmienna globalna
+        global UB  # zmienna globalna
         global best_perm
-        sch = schrage(matrix_rpq)
+        sch = schrage.schrage()
         U,perm = sch.schrange_alg(matrix_rpq)
-        if U < U_b:
-            U_b = U
+        if U < UB:
+            UB = U
             best_perm = perm
+        b = self.calculate_b(U,perm,matrix_rpq)
+        a = self.calculate_a(U,perm,matrix_rpq,b)
+        c = self.calculate_c(perm,matrix_rpq,a,b)
+
+        if c == -1:
+            return
+
+       # K = []
+        #for i in range(c+1,b+1):
+         #   K.append(i)
+        rK = []
+        qK = []
+        pK = 0
+
+        for val in perm[perm.index(c)+1:perm.index(b)+1]:
+            rK.append(matrix_rpq[val].prep_time)
+            qK.append(matrix_rpq[val].deliv_time)
+            pK += matrix_rpq[val].make_time
+
+        qK_min = min(qK)
+        rK_min = min(rK)
+        pK_min = pK
+        rpq_sum = qK_min + rK_min + pK_min
+
+        temp = matrix_rpq[perm[c]].prep_time
+        matrix_rpq[perm[c]].prep_time = max(matrix_rpq[perm[c]].prep_time,rK_min+pK_min)
+
+        pKc_min = pK_min + matrix_rpq[perm[c]].make_time
+        qKc_min = min(qK_min,matrix_rpq[perm[c]].deliv_time)
+        rKc_min = min(rK_min,matrix_rpq[perm[c]].prep_time)
+        rpq_c_sum = pKc_min + qKc_min + rKc_min
+
+        LB = sch.schrange_alg_interrupt(matrix_rpq)
+
+
+        LB = max(rpq_sum,rpq_c_sum,LB )
+        
+        if LB < UB :
+            self.execute_carlier(matrix_rpq)
+        matrix_rpq[perm[c]].prep_time = temp
+
+
+
+        #start_time_c = max(matrix_rpq[perm[c]].prep_time, rK_min + pK_min)
+        temp = matrix_rpq[perm[c]].deliv_time
+        matrix_rpq[perm[c]].deliv_time = max(matrix_rpq[perm[c]].deliv_time, qK_min + pK_min)
+
+        pKc_min = pK_min + matrix_rpq[perm[c]].make_time
+        qKc_min = min(qK_min, matrix_rpq[perm[c]].deliv_time)
+        rKc_min = min(rK_min, matrix_rpq[perm[c]].prep_time)
+        rpq_c_sum = pKc_min + qKc_min + rKc_min
+
+        LB = sch.schrange_alg_interrupt(matrix_rpq)
+
+        LB = max(rpq_sum, rpq_c_sum, LB)
+
+        if LB < UB:
+            self.execute_carlier(matrix_rpq)
+        matrix_rpq[perm[c]].deliv_time = temp
+
+
+
+
+
+
+
+
+
 
     def calculate_b(self, U, perm, matrix_rpq):
         p = 0
@@ -36,7 +104,7 @@ class carlier:
         for val in perm:
             p = 0
             r = matrix_rpq[val].prep_time
-            current_task_index = matrix_rpq[val].prep_time
+            current_task_index = perm.index(val)
 
             for i in range(current_task_index, task_b+1):
                 p += matrix_rpq[perm[i]].make_time
@@ -52,7 +120,17 @@ class carlier:
                 index = perm[val]
                 return  index
 
-        return [] # zbior pusty
+        return -1 # zbior pusty
+
+
+
+
+if __name__ == "__main__":
+    car = carlier()
+    matrix = schrage.read_from_file("dane.txt")
+    car.execute_carlier(matrix)
+    print(best_perm)
+    print(UB)
 
 
 
