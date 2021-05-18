@@ -17,7 +17,8 @@ class schrage:
         self.max_end_time = 0
 
 
-    def schrange_alg(self):
+    def schrange_alg(self,matrix_rpq):
+        self.matrix_tasks = matrix_rpq
         N_g = [] # zbior zadan do uszeregowania
         N_n = self.matrix_tasks.copy()  #zbior zadan nieuszeregowanych
         #current_time = min(N_n)[0] #najmniejszy czas przygotowania w zadaniach
@@ -66,7 +67,7 @@ class schrage:
 
         return self.max_end_time
 
-                
+
 
 
 
@@ -81,7 +82,7 @@ class schrage:
         number_of_machine = int(list_from_file[1])
 
         loaded_table_from_file = []
-
+        matrix_tasks = []
 
         for i in range(number_of_task):
             line_from_file = f.readline()
@@ -90,8 +91,11 @@ class schrage:
             prep_time = int(list_from_file[0])
             make_time = int(list_from_file[1])
             deliv_time = int(list_from_file[2])
-            rpq = data(prep_time,make_time,deliv_time,i+1)
-            self.matrix_tasks.append(rpq)
+            rpq = data(prep_time,make_time,deliv_time,i)
+
+            matrix_tasks.append(rpq)
+
+        return matrix_tasks
 
 
 
@@ -102,8 +106,8 @@ class schrage:
 
 if __name__ == "__main__":
     sch = schrage()
-    sch.read_from_file("dane.txt")
+
     #sch.matrix_tasks[0].prep_time
-    x,y = sch.schrange_alg()
-    print(y)
+    x,y = sch.schrange_alg(sch.read_from_file("dane.txt"))
+    print(x,y)
     #print(matrix[2].index(max(matrix,key=operator.itemgetter(2))[2]))
