@@ -1,5 +1,7 @@
 import  schrage
 import  math
+from copy import deepcopy
+
 UB = math.inf
 best_perm = []
 # n liczba zadan
@@ -7,7 +9,8 @@ best_perm = []
 # UB gorne oszacowanie wartosci funkcji celu
 # wartosc funkcji dla najlepszego obecnie rozwiazania
 # data005 gorszy cmax
-#data003 lepszy cmax 3643 vs 3665
+# data003 lepszy cmax 3643 vs 3665
+
 class carlier:
     def __init__(self):
         pass
@@ -53,7 +56,25 @@ class carlier:
         rpq_c_sum = pKc_min + qKc_min + rKc_min
 
         sch_i = schrage.schrage()
-        LB = sch_i.schrange_alg_interrupt(matrix_rpq)
+        matrix_copy = deepcopy(matrix_rpq)
+        LB = sch_i.schrange_alg_interrupt(matrix_copy)
+
+###############################################################################################
+        temp_list = []
+        for i in perm[0:perm.index(c)]:
+            temp_list.append(i)
+        for i in perm[perm.index(b)+1:]:
+            temp_list.append(i)
+        for i in temp_list:
+            if UB - rpq_sum >= matrix_rpq[i].make_time:
+                temp_list.pop(temp_list.index(i))
+
+        for i in temp_list:
+            if UB <= matrix_rpq[i].prep_time + matrix_rpq[i].make_time + pK_min + matrix_rpq[b].deliv_time:
+                matrix_rpq[i].prep_time = max(matrix_rpq[i].prep_time, rK_min + pK_min)
+            if UB <= rK_min + matrix_rpq[i].make_time + pK_min + matrix_rpq[i].deliv_time:
+                matrix_rpq[i].deliv_time = max(matrix_rpq[i].deliv_time, qK_min + pK_min)
+#############################################################################################
 
 
         LB = max(rpq_sum,rpq_c_sum,LB )
@@ -73,7 +94,9 @@ class carlier:
         rKc_min = min(rK_min, matrix_rpq[c].prep_time)
         rpq_c_sum = pKc_min + qKc_min + rKc_min
 
-        LB = sch.schrange_alg_interrupt(matrix_rpq)
+        sch_i2 = schrage.schrage()
+        matrix_copy = deepcopy(matrix_rpq)
+        LB = sch_i2.schrange_alg_interrupt(matrix_copy)
 
         LB = max(rpq_sum, rpq_c_sum, LB)
 
@@ -113,17 +136,16 @@ class carlier:
             if U == r+p+q:
                 return val #pierwsze zadanie takie podczas ktorego nie wystepuja przerwy
 
-    def calculate_c(self, perm, matrix_rpq,a,b):
+    def calculate_c(self, perm, matrix_rpq, a, b):
         a_task = perm.index(a)
         b_task = perm.index(b)
 
-        for val in range(b_task,a_task-1,-1):
+        for val in range(b_task, a_task-1, -1):
             if matrix_rpq[perm[val]].deliv_time < matrix_rpq[perm[b_task]].deliv_time:
                 index = perm[val]
-                return  index
+                return index
 
-        return -1 # zbior pusty
-
+        return -1  # zbior pusty
 
 
 
