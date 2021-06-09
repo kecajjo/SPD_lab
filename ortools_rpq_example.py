@@ -12,9 +12,11 @@ class RPQ_Task:
         self.q: int = q
 
 class RPQ_Instance:
+    def __init__(self):
+        self.tasks = []
     """ Klasa przechowująca dane konkretniej instancji problemu - czyli wielu zadań jako (tasks) oraz liczby zadań (tasks_number)"""
 
-    tasks: [] # lista wszystkich zadań, będą po kolei dla wygody tak bylo list[RPQ_Task]
+    #tasks: [] # lista wszystkich zadań, będą po kolei dla wygody tak bylo list[RPQ_Task]
     tasks_number: int # liczba wszystkich zadań
 
 
