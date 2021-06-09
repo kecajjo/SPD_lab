@@ -27,7 +27,7 @@ class RPQ_Instance:
         list_from_file = line_from_file.split()
         number_of_task = int(list_from_file[0])
         instance = RPQ_Instance()
-        instance.tasks_number = 3
+        instance.tasks_number = number_of_task
         for i in range(number_of_task):
             line_from_file = f.readline()
             list_from_file = line_from_file.split()
@@ -85,7 +85,7 @@ def solve_rpq_with_solver(instance: RPQ_Instance):
     # wewnątrz modelu i nie jest to typowy int - próba sprawdzenia, czy jest to pythonowy typ int zwróci fałsz:
     # aby stworzyć tą zmienną musimy podać zakres oraz nazwę zmiennej
     cmax_optimalization_objective = model.NewIntVar(variable_min_value, variable_max_value, 'cmax_makespan')
-    print("type of cmax:", type(cmax_optimalization_objective), isinstance(cmax_optimalization_objective, int)) # można zakomentować bez żalu
+    #print("type of cmax:", type(cmax_optimalization_objective), isinstance(cmax_optimalization_objective, int)) # można zakomentować bez żalu
 
     # więcej zmiennych: dla czasu rozpoczęcia, zakończenia i interwałów, ale dla każdego zdania więc korzystamy z pętli
     for task_number in range(instance.tasks_number):

@@ -105,6 +105,6 @@ if __name__ == "__main__":
     sch = schrage()
 
     #sch.matrix_tasks[0].prep_time
-    x,y = sch.schrange_alg(sch.read_from_file("dane.txt"))
+    x,y = sch.schrange_alg(read_from_file("dane.txt"))
     print(x,y)
     #print(matrix[2].index(max(matrix,key=operator.itemgetter(2))[2]))
